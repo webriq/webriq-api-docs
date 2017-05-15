@@ -1,5 +1,5 @@
 ---
-title: API Reference
+title: WebriQ API Reference
 
 language_tabs:
   - shell
