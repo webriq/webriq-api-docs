@@ -247,7 +247,7 @@
 </span></code></pre>
 <p>Welcome to the WebriQ API! You can use our API to access WebriQ API endpoints which allows you to view information of all your sites as well reading, putting, updating and deleting contents on your site.</p>
 
-<p>We have language bindings in Shell, Ruby, Python and Javascript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>We have language bindings in Shell and Javascript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
 
 <p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a> and can be found at WebriQ&rsquo;s GitHub <a href="https://github.com/webriq/webriq-api-docs">repository</a>. Feel free to submit a pull request to help this documentation improve.</p>
 
@@ -267,7 +267,7 @@ curl <span class="s2">"https://app.webriq.com/api"</span>
 <p>Make sure to replace <code class="prettyprint">token</code> with your API key.</p>
 </blockquote>
 
-<p>WebriQ API uses JSON Web Tokens to authorize access access to the API. You can register a new WebriQ API by going to your sites settings page and <code class="prettyprint">API</code> tab. Alternatively you can use the <em>Tokens</em> endpoint below to generate one.</p>
+<p>WebriQ API uses JSON Web Tokens to authorize access to the API. You can register a new WebriQ API by going to your sites settings page and <code class="prettyprint">API</code> tab. Alternatively you can use the <em>Tokens</em> endpoint <a href="#get-a-token">below</a> to generate one.</p>
 
 <p>WebriQ API expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
 
@@ -276,6 +276,89 @@ curl <span class="s2">"https://app.webriq.com/api"</span>
 <aside class="notice">
 You must replace <code>&lt;token&gt;</code> with your personal API key.
 </aside>
+
+          <h2 id="get-a-token">Get a Token</h2>
+<pre class="highlight shell tab-shell"><code>curl -X POST --header <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> --header <span class="s1">'Accept: application/json'</span> -d <span class="s1">'email=email@example.com&amp;password=testpassword'</span> <span class="s1">'https://app.webriq.com/api/token'</span>
+  -H <span class="s2">"Authorization: Bearer &lt;token&gt;"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">wapi</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webriq-api'</span><span class="p">);</span>
+
+<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">wapi</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Token created successfully"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHBzOlwvXC93ZWJyaXEtcG9ydGFsLmRldlwvYXBpXC90b2tlbiIsImlhdCI6MTQ5NDgzNzg5MywiZXhwIjoxNDk0OTI0MjkzLCJuYmYiOjE0OTQ4Mzc4OTMsImp0aSI6ImQ3ZDkxOGI1YzFiODJiZTMyNWUxNzM0YjkxNDY3MTYwIn0.Rj_K78n03J2-FxEeM0-v4w2tkM_QPNiYmEK5Po2k2RQ"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint provides basic authentication using user credentials and returns a JWT auth token that can be used on requests that needs authorization.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://app.webriq.com/api/token</code></p>
+
+<h2 id="invalidate-a-token">Invalidate a Token</h2>
+<pre class="highlight shell tab-shell"><code>curl -X POST --header <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> --header <span class="s1">'Accept: application/json'</span> -d <span class="s1">'token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHBzOlwvXC93ZWJyaXEtcG9ydGFsLmRldlwvYXBpXC90b2tlbiIsImlhdCI6MTQ5NDgzNzg5MywiZXhwIjoxNDk0OTI0MjkzLCJuYmYiOjE0OTQ4Mzc4OTMsImp0aSI6ImQ3ZDkxOGI1YzFiODJiZTMyNWUxNzM0YjkxNDY3MTYwIn0.Rj_K78n03J2-FxEeM0-v4w2tkM_QPNiYmEK5Po2k2RQ'</span> <span class="s1">'https://app.webriq.com/api/token/invalidate
+  -H "Authorization: Bearer &lt;token&gt;"
+</span></code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">wapi</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webriq-api'</span><span class="p">);</span>
+
+<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">wapi</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">).</span><span class="nx">invalidate</span><span class="p">();</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Token invalidated successfully"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint invalidates a previously generated token. Meaning, it can&rsquo;t be anymore used to further make authorized requests in behalf of your account.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://app.webriq.com/api/token/invalidate</code></p>
+
+<h2 id="refresh-a-token">Refresh a Token</h2>
+<pre class="highlight shell tab-shell"><code>curl -X GET --header <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> --header <span class="s1">'Accept: application/json'</span> <span class="s1">'https://app.webriq.com/api/token/refresh'</span>
+  -H <span class="s2">"Authorization: Bearer &lt;token&gt;"</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">wapi</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webriq-api'</span><span class="p">);</span>
+
+<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">wapi</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">).</span><span class="nx">refresh</span><span class="p">();</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Token refreshed successfully"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHBzOlwvXC93ZWJyaXEtcG9ydGFsLmRldlwvYXBpXC90b2tlblwvcmVmcmVzaCIsImlhdCI6MTQ5NDgzMTg3NSwiZXhwIjoxNDk0OTI0OTIyLCJuYmYiOjE0OTQ4Mzg1MjIsImp0aSI6Ijk0NDY0ZmI2YzU0YzFiMDVmNzI4NjY0YjVkOTA5Mjk3In0.yIBFIzEky4IpftF5QHzIhzAigqmBBKkMbzNsA8OPxRA"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint allows you to refresh the token.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://app.webriq.com/api/token/refresh</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>Token to refresh</td>
+</tr>
+</tbody></table>
 
           <h1 id="sites">Sites</h1>
 
@@ -293,7 +376,7 @@ You must replace <code>&lt;token&gt;</code> with your personal API key.
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aXbErEB9J3B0"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EKekWeRrRqPQ"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"primary_owner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hellome@gmail.com"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"owner"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"subdomain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"anewsitehasbeenmade.sites.webriqs.com"</span><span class="p">,</span><span class="w">
@@ -306,7 +389,7 @@ You must replace <code>&lt;token&gt;</code> with your personal API key.
       </span><span class="s2">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-03-15T07:08:25+00:00"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-03-15T07:08:25+00:00"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"endpoints"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"collections"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://app.webriq.com/api/sites/aXbErEB9J3B0/collections"</span><span class="w">
+        </span><span class="s2">"collections"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://app.webriq.com/api/sites/EKekWeRrRqPQ/collections"</span><span class="w">
       </span><span class="p">}</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w">
@@ -315,7 +398,7 @@ You must replace <code>&lt;token&gt;</code> with your personal API key.
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves all sites on your WebriQ account. Sites you <code>primarily owned</code>, <code>invited to owned</code> and/or with you as <code>developer</code>.</p>
+<p>This endpoint retrieves all sites on your WebriQ account. Sites you <code>primarily owned</code>, <code>invited to owned</code> and/or with you as <code>developer</code>. The rest of the API endpoints will allow you to see how the data model is designed on your site as well as be able to read, create, update, delete data/content saved.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -334,12 +417,12 @@ You must replace <code>&lt;token&gt;</code> with your personal API key.
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"collections"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://app.webriq.com/api/sites/aXbErEB9J3B0/collections"</span><span class="w">
+    </span><span class="s2">"collections"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://app.webriq.com/api/sites/EKekWeRrRqPQ/collections"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="s2">"status_code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves available site API endpoints for a given site by passing its ID. By default, this returns <code class="prettyprint">collection</code> which is the default resource you can work on managing your site&rsquo;s data.</p>
+<p>This endpoint retrieves all available site API endpoints for a given site by passing its ID. By default, this returns the <code class="prettyprint">collection</code> API endpoint.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -432,7 +515,7 @@ You must replace <code>&lt;token&gt;</code> with your personal API key.
   </span><span class="s2">"status_code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves the data model of the current site.</p>
+<p>This endpoint retrieves the summary of the data model of the current site. This data model tells us which parts of your site&rsquo;s data we can work on; activities such as creating, reading, updating, deleting content and more.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -453,7 +536,7 @@ You must replace <code>&lt;token&gt;</code> with your personal API key.
 </tbody></table>
 
 <aside class="notice">
-A <code>collection</code> is a simple group of data via a definition or a model. There are two types of collection, <code>file</code> and <code>folder</code>. Folder houses a list of <code>files</code> or <code>folder</code> types. In the end, the very basic type of <code>file</code> is the resource where you can work on saving and deleting data.
+A <code>collection</code> is a simple group of data via a definition or a model. There are two types of collection, <code>file</code> and <code>folder</code>. Folder houses a list of <code>files</code> or <code>folder</code> types. In the end, the very basic type of <code>file</code> is the resource where you can work on saving, updating and deleting data.
 </aside>
 
 <h2 id="get-site-collection">Get Site Collection</h2>
@@ -606,15 +689,23 @@ A `collection` is a simple group of data via a definition or a model. There are 
 <tr>
 <th>Parameter</th>
 <th>Description</th>
+<th>Location</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>ID</td>
 <td>The ID of the site</td>
+<td>Query URL</td>
 </tr>
 <tr>
 <td>COLLECTION_PATH_AND_NAME</td>
 <td>Collection name and path to save</td>
+<td>Query URL</td>
+</tr>
+<tr>
+<td>BODY</td>
+<td>JSON Raw Data</td>
+<td>Request Body following the Collection model</td>
 </tr>
 </tbody></table>
 
@@ -671,15 +762,23 @@ A `collection` is a simple group of data via a definition or a model. There are 
 <tr>
 <th>Parameter</th>
 <th>Description</th>
+<th>Location</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>ID</td>
 <td>The ID of the site</td>
+<td>Query URL</td>
 </tr>
 <tr>
 <td>COLLECTION_PATH_AND_NAME</td>
 <td>Collection name and path to save</td>
+<td>Query URL</td>
+</tr>
+<tr>
+<td>BODY</td>
+<td>JSON Raw Data</td>
+<td>Request Body following the Collection model</td>
 </tr>
 </tbody></table>
 
@@ -724,26 +823,83 @@ A `collection` is a simple group of data via a definition or a model. There are 
 </tr>
 </tbody></table>
 
-<h2 id="saving-with-file-uploads">Saving With File Uploads</h2>
-<pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://app.webriq.com/api/kittens/2"</span>
+<h2 id="file-uploads">File Uploads</h2>
+<pre class="highlight shell tab-shell"><code><span class="c"># POST and PUT requests are allowed for file uploads</span>
+curl -X PUT --header <span class="s1">'Content-Type: application/json'</span> --header <span class="s1">'Accept: application/json'</span> -d <span class="s1">'{ \
+     "title": "Working With JSON", \
+     "date": "1459900800", \
+     "shortdesc": "Here is some more information about this product that is only revealed once clicked on.", \
+     "banner": { \
+        "filedata": { \
+          "name": "11111.png", \
+          "content": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTRGQjkwNjdERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTRGQjkwNjhERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxNEZCOTA2NURGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxNEZCOTA2NkRGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmXj5kYAAAN5SURBVHja7JdJaFRBEIbnDYlOVvctalCj4oIhUUGQHBSFJO6CB4MgKJ4UQtCLXiTEKBEVUUGCGggu4EFRvLgvmAWNSzQqxgUMUXHFaBRNXDL+hf+Dou15b0aFudjw8eZ1VVfX666u6nHC4XAgni0YiHOLuwMJXkLHcRLxGAemgElgFBgCeoMkpdoJ3oOX4DG4Da6CW9jiT55z2GIAEw/HowgsArlK1AaegjfgA/gh6iAN9AJDwSCl3wKOgWrM02T1QBxw4ZdtBO0iAq9lMFhKR2SSoB5jjE8Bo8E8sA3cpx1xdKs4+tsYw8BZDmgEy0G/SJNFA1oIzAG1tLvXz4EOcBEkG/1JMUwqcdPd4sgD8NDUN0+BaLdA8FnFw3o86vEsAUGfoJ2FRx2owe+Raps7uJ2O3yn4xjjQTQIyh2SC1REmL8DjKL9WWg8lC9Juh18QPpGvNfok8I5zdYSFlmWXyG+l/B6YbcjTeYLO+cXABfAWpBr93cBOTnBd9tmQuzIJtkyLg+Mpr/RzYAsVcy1GeoIzlOep/mFAks1dHtcSy9jFHLfCLwgv8Zln2eZycBJIgOar/vk8/yv5PsMyNp8O1PnVgnrwjh6bbTJ4BQ6C6ap/AWjA11xmqg4ZwSkrN1fSMnjk6QCMtDF1TsXAXMuJkWNUKfsMeTpI5f7uoU4Gv1Q3mbwPOAT736Ophq6xYkuOkOBrZNGRIjUYiNFT6uglGMWsBHwEh6Mtx9fAabAEBrJpyOHXu4mkAUwEY0EznHrO/mRJ39QPsJiJXpXS8XYg/CtsS5lSK1RfAouKtPNMTNlM3W4LMVmlwAepkBtYprfHdCHBfFekcIBCGCrmF/VVmayJ9wK5J9xQQxOZdGRr1oIssAn2WiPmb4+i0p+Z8QtYw/pfQFkaK6YE7Rg1po6xsp+xUW8WJs9EZHGiUKXgr7Kf7A/y1iPLO0Dp1yh9cW6CX/X0rG5QkMSzDnTRaDv7u5j92rkybnumTswq6N3xvRRGUd9HcDJ5OSJ1gf0VPNsBtS3uFpRFfX+IwoFSGnVXodq9dMi5p06GqhM7vK5tscbAQPCChneDffx9QK2EpOhm9u+K+drm48BmFVTTmIiq+H4CLGPtkPfyP7o3ekyexft+mJkvpGRlyrFOW5n9Fw7I8t9kosmxyIu47zP/5ubs/P9zGm8HfgowAOu/JVc3mQ8hAAAAAElFTkSuQmCC" \
+        } \
+      }, \
+     "categories": "technology food", \
+     "body": "Sample update markdown content" \
+   }'</span> <span class="s1">'https://app.webriq.com/api/sites/EKekWeRrRqPQ/collections/news%2Fsamplemarkdown22.md'</span>
   -H <span class="s2">"Authorization: Bearer &lt;token&gt;"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">wapi</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webriq-api'</span><span class="p">);</span>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'token'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">wapi</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'token'</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">site</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'EKekWeRrRqPQ'</span><span class="p">).</span><span class="nx">collections</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'news/samplemarkdown22.md'</span><span class="p">).</span><span class="nx">data</span><span class="p">({</span>
+  <span class="s2">"title"</span><span class="p">:</span> <span class="s2">"Working With JSON"</span><span class="p">,</span>
+  <span class="s2">"date"</span><span class="p">:</span> <span class="s2">"1459900800"</span><span class="p">,</span>
+  <span class="s2">"shortdesc"</span><span class="p">:</span> <span class="s2">"Here is some more information about this product that is only revealed once clicked on."</span><span class="p">,</span>
+  <span class="s2">"banner"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"filedata"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"11111.png"</span><span class="p">,</span>
+      <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTRGQjkwNjdERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTRGQjkwNjhERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxNEZCOTA2NURGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxNEZCOTA2NkRGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmXj5kYAAAN5SURBVHja7JdJaFRBEIbnDYlOVvctalCj4oIhUUGQHBSFJO6CB4MgKJ4UQtCLXiTEKBEVUUGCGggu4EFRvLgvmAWNSzQqxgUMUXHFaBRNXDL+hf+Dou15b0aFudjw8eZ1VVfX666u6nHC4XAgni0YiHOLuwMJXkLHcRLxGAemgElgFBgCeoMkpdoJ3oOX4DG4Da6CW9jiT55z2GIAEw/HowgsArlK1AaegjfgA/gh6iAN9AJDwSCl3wKOgWrM02T1QBxw4ZdtBO0iAq9lMFhKR2SSoB5jjE8Bo8E8sA3cpx1xdKs4+tsYw8BZDmgEy0G/SJNFA1oIzAG1tLvXz4EOcBEkG/1JMUwqcdPd4sgD8NDUN0+BaLdA8FnFw3o86vEsAUGfoJ2FRx2owe+Raps7uJ2O3yn4xjjQTQIyh2SC1REmL8DjKL9WWg8lC9Juh18QPpGvNfok8I5zdYSFlmWXyG+l/B6YbcjTeYLO+cXABfAWpBr93cBOTnBd9tmQuzIJtkyLg+Mpr/RzYAsVcy1GeoIzlOep/mFAks1dHtcSy9jFHLfCLwgv8Zln2eZycBJIgOar/vk8/yv5PsMyNp8O1PnVgnrwjh6bbTJ4BQ6C6ap/AWjA11xmqg4ZwSkrN1fSMnjk6QCMtDF1TsXAXMuJkWNUKfsMeTpI5f7uoU4Gv1Q3mbwPOAT736Ophq6xYkuOkOBrZNGRIjUYiNFT6uglGMWsBHwEh6Mtx9fAabAEBrJpyOHXu4mkAUwEY0EznHrO/mRJ39QPsJiJXpXS8XYg/CtsS5lSK1RfAouKtPNMTNlM3W4LMVmlwAepkBtYprfHdCHBfFekcIBCGCrmF/VVmayJ9wK5J9xQQxOZdGRr1oIssAn2WiPmb4+i0p+Z8QtYw/pfQFkaK6YE7Rg1po6xsp+xUW8WJs9EZHGiUKXgr7Kf7A/y1iPLO0Dp1yh9cW6CX/X0rG5QkMSzDnTRaDv7u5j92rkybnumTswq6N3xvRRGUd9HcDJ5OSJ1gf0VPNsBtS3uFpRFfX+IwoFSGnVXodq9dMi5p06GqhM7vK5tscbAQPCChneDffx9QK2EpOhm9u+K+drm48BmFVTTmIiq+H4CLGPtkPfyP7o3ekyexft+mJkvpGRlyrFOW5n9Fw7I8t9kosmxyIu47zP/5ubs/P9zGm8HfgowAOu/JVc3mQ8hAAAAAElFTkSuQmCC"</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">"categories"</span><span class="p">:</span> <span class="s2">"technology food"</span><span class="p">,</span>
+  <span class="s2">"body"</span><span class="p">:</span> <span class="s2">"Sample markdown content"</span>
+<span class="p">});</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Collection updated at 'news/2016-04-04-working-with-json.md'"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"main"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Working With JSON"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1459900800"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"shortdesc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here is some more information about this product that is only revealed once clicked on."</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"banner"</span><span class="p">:</span><span class="w"> </span><span class="s2">"img/11111.png"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"categories"</span><span class="p">:</span><span class="w"> </span><span class="s2">"technology food"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"body"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample update markdown content"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"uploads"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"key_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"banner"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTRGQjkwNjdERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTRGQjkwNjhERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxNEZCOTA2NURGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxNEZCOTA2NkRGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmXj5kYAAAN5SURBVHja7JdJaFRBEIbnDYlOVvctalCj4oIhUUGQHBSFJO6CB4MgKJ4UQtCLXiTEKBEVUUGCGggu4EFRvLgvmAWNSzQqxgUMUXHFaBRNXDL+hf+Dou15b0aFudjw8eZ1VVfX666u6nHC4XAgni0YiHOLuwMJXkLHcRLxGAemgElgFBgCeoMkpdoJ3oOX4DG4Da6CW9jiT55z2GIAEw/HowgsArlK1AaegjfgA/gh6iAN9AJDwSCl3wKOgWrM02T1QBxw4ZdtBO0iAq9lMFhKR2SSoB5jjE8Bo8E8sA3cpx1xdKs4+tsYw8BZDmgEy0G/SJNFA1oIzAG1tLvXz4EOcBEkG/1JMUwqcdPd4sgD8NDUN0+BaLdA8FnFw3o86vEsAUGfoJ2FRx2owe+Raps7uJ2O3yn4xjjQTQIyh2SC1REmL8DjKL9WWg8lC9Juh18QPpGvNfok8I5zdYSFlmWXyG+l/B6YbcjTeYLO+cXABfAWpBr93cBOTnBd9tmQuzIJtkyLg+Mpr/RzYAsVcy1GeoIzlOep/mFAks1dHtcSy9jFHLfCLwgv8Zln2eZycBJIgOar/vk8/yv5PsMyNp8O1PnVgnrwjh6bbTJ4BQ6C6ap/AWjA11xmqg4ZwSkrN1fSMnjk6QCMtDF1TsXAXMuJkWNUKfsMeTpI5f7uoU4Gv1Q3mbwPOAT736Ophq6xYkuOkOBrZNGRIjUYiNFT6uglGMWsBHwEh6Mtx9fAabAEBrJpyOHXu4mkAUwEY0EznHrO/mRJ39QPsJiJXpXS8XYg/CtsS5lSK1RfAouKtPNMTNlM3W4LMVmlwAepkBtYprfHdCHBfFekcIBCGCrmF/VVmayJ9wK5J9xQQxOZdGRr1oIssAn2WiPmb4+i0p+Z8QtYw/pfQFkaK6YE7Rg1po6xsp+xUW8WJs9EZHGiUKXgr7Kf7A/y1iPLO0Dp1yh9cW6CX/X0rG5QkMSzDnTRaDv7u5j92rkybnumTswq6N3xvRRGUd9HcDJ5OSJ1gf0VPNsBtS3uFpRFfX+IwoFSGnVXodq9dMi5p06GqhM7vK5tscbAQPCChneDffx9QK2EpOhm9u+K+drm48BmFVTTmIiq+H4CLGPtkPfyP7o3ekyexft+mJkvpGRlyrFOW5n9Fw7I8t9kosmxyIu47zP/5ubs/P9zGm8HfgowAOu/JVc3mQ8hAAAAAElFTkSuQmCC"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"media_folder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assets/img"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11111.png"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"status_code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint updates a given collection of a given site. The retrieved collection model must be followed in JSON format and passed in the body section.</p>
+<p>When working with file uploads, you can directly upload files via attaching the raw data of file in JSON format. File uploads only works on data type <code>image</code>.</p>
+
+<p>One should follow the format below:</p>
+
+<p><code>
+&quot;filedata&quot;: {
+  &quot;name&quot;: &quot;filename.png&quot;,
+  &quot;content&quot;: &quot;base64_encoded_data&quot;
+}
+</code></p>
+
+<p>In <strong>Save New Site Collection</strong> example POST request via <code>shell</code>, we can only do file upload on <code>banner</code> key as it&rsquo;s the only one with <code>image</code> data type.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT https://app.webriq.com/api/sites/&lt;ID&gt;/collections</code></p>
+<p><code class="prettyprint">POST https://app.webriq.com/api/sites/&lt;ID&gt;/collections/&lt;COLLECTION_PATH_AND_NAME&gt;</code></p>
+
+<p><code class="prettyprint">PUT https://app.webriq.com/api/sites/&lt;ID&gt;/collections/&lt;COLLECTION_PATH_AND_NAME&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -751,98 +907,29 @@ A `collection` is a simple group of data via a definition or a model. There are 
 <tr>
 <th>Parameter</th>
 <th>Description</th>
+<th>Location</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>ID</td>
-<td>The ID of the site to retrieve</td>
+<td>The ID of the site</td>
+<td>Query URL</td>
+</tr>
+<tr>
+<td>COLLECTION_PATH_AND_NAME</td>
+<td>Collection name and path to save</td>
+<td>Query URL</td>
+</tr>
+<tr>
+<td>BODY</td>
+<td>JSON Raw Data</td>
+<td>Request Body following the Collection model</td>
 </tr>
 </tbody></table>
 
-          <h1 id="token">Token</h1>
-
-<h2 id="get-a-token">Get a Token</h2>
-<pre class="highlight shell tab-shell"><code>curl -X POST --header <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> --header <span class="s1">'Accept: application/json'</span> -d <span class="s1">'email=email@example.com&amp;password=testpassword'</span> <span class="s1">'https://app.webriq.com/api/token'</span>
-  -H <span class="s2">"Authorization: Bearer &lt;token&gt;"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">wapi</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webriq-api'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">wapi</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Token created successfully"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHBzOlwvXC93ZWJyaXEtcG9ydGFsLmRldlwvYXBpXC90b2tlbiIsImlhdCI6MTQ5NDgzNzg5MywiZXhwIjoxNDk0OTI0MjkzLCJuYmYiOjE0OTQ4Mzc4OTMsImp0aSI6ImQ3ZDkxOGI1YzFiODJiZTMyNWUxNzM0YjkxNDY3MTYwIn0.Rj_K78n03J2-FxEeM0-v4w2tkM_QPNiYmEK5Po2k2RQ"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint provides basic authentication using user credentials and returns a JWT auth token that can be used on requests that needs authorization.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">POST https://app.webriq.com/api/token</code></p>
-
-<h2 id="invalidate-a-token">Invalidate a Token</h2>
-<pre class="highlight shell tab-shell"><code>curl -X POST --header <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> --header <span class="s1">'Accept: application/json'</span> -d <span class="s1">'token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHBzOlwvXC93ZWJyaXEtcG9ydGFsLmRldlwvYXBpXC90b2tlbiIsImlhdCI6MTQ5NDgzNzg5MywiZXhwIjoxNDk0OTI0MjkzLCJuYmYiOjE0OTQ4Mzc4OTMsImp0aSI6ImQ3ZDkxOGI1YzFiODJiZTMyNWUxNzM0YjkxNDY3MTYwIn0.Rj_K78n03J2-FxEeM0-v4w2tkM_QPNiYmEK5Po2k2RQ'</span> <span class="s1">'https://app.webriq.com/api/token/invalidate
-  -H "Authorization: Bearer &lt;token&gt;"
-</span></code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">wapi</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webriq-api'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">wapi</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">).</span><span class="nx">invalidate</span><span class="p">();</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Token invalidated successfully"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint invalidates a previously generated token. Meaning, it can&rsquo;t be anymore used to further make authorized requests in behalf of your account.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">POST https://app.webriq.com/api/token/invalidate</code></p>
-
-<h2 id="refresh-a-token">Refresh a Token</h2>
-<pre class="highlight shell tab-shell"><code>curl -X GET --header <span class="s1">'Content-Type: application/x-www-form-urlencoded'</span> --header <span class="s1">'Accept: application/json'</span> <span class="s1">'https://app.webriq.com/api/token/refresh'</span>
-  -H <span class="s2">"Authorization: Bearer &lt;token&gt;"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">wapi</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'webriq-api'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">wapi</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">).</span><span class="nx">refresh</span><span class="p">();</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Token refreshed successfully"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHBzOlwvXC93ZWJyaXEtcG9ydGFsLmRldlwvYXBpXC90b2tlblwvcmVmcmVzaCIsImlhdCI6MTQ5NDgzMTg3NSwiZXhwIjoxNDk0OTI0OTIyLCJuYmYiOjE0OTQ4Mzg1MjIsImp0aSI6Ijk0NDY0ZmI2YzU0YzFiMDVmNzI4NjY0YjVkOTA5Mjk3In0.yIBFIzEky4IpftF5QHzIhzAigqmBBKkMbzNsA8OPxRA"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint allows you to refresh the token.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://app.webriq.com/api/token/refresh</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>token</td>
-<td>Token to refresh</td>
-</tr>
-</tbody></table>
+<aside class="notice">
+File upload <code>content</code> must be <code>base64 encoded</code>. Find out how to get base64 encoded data with your choice of language.
+</aside>
 
           <h1 id="responses">Responses</h1>
 
