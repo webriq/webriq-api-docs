@@ -6,9 +6,9 @@ language_tabs:
   - javascript
 
 toc_footers:
-  - <a href="https://app.webriq.com/api/documentation#!/token/token" target="_blank">Get API Token</a>
+  - <a href="#get-a-token" target="_blank">Get API Token</a>
   - <a href='https://app.webriq.com/api/documentation' target="_blank">Explore WebriQ API</a>
-  - https://app.webriq.com/api
+  - <a href='https://app.webriq.com/help' target="_blank">Back to WebriQ Help Page</a>
 
 includes:
   - tokens

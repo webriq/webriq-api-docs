@@ -1,8 +1,7 @@
 ## Get a Token
 
 ```shell
-curl -X POST --header 'Content-Type: application/x-www-form-urlencoded' --header 'Accept: application/json' -d 'email=email@example.com&password=testpassword' 'https://app.webriq.com/api/token'
-  -H "Authorization: Bearer <token>"
+curl -X POST --header 'Content-Type: application/x-www-form-urlencoded' --header 'Accept: application/json' -d 'email=email@example.com&password=accountpassword' 'https://app.webriq.com/api/token'
 ```
 
 ```javascript
