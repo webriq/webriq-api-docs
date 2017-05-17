@@ -1,5 +1,3 @@
-# Token
-
 ## Get a Token
 
 ```shell

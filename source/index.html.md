@@ -11,8 +11,8 @@ toc_footers:
   - https://app.webriq.com/api
 
 includes:
-  - sites
   - tokens
+  - sites
   - responses
 
 search: true
@@ -40,7 +40,7 @@ curl "https://app.webriq.com/api"
 
 Welcome to the WebriQ API! You can use our API to access WebriQ API endpoints which allows you to view information of all your sites as well reading, putting, updating and deleting contents on your site.
 
-We have language bindings in Shell, Ruby, Python and Javascript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in Shell and Javascript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
 This example API documentation page was created with [Slate](https://github.com/tripit/slate) and can be found at WebriQ's GitHub [repository](https://github.com/webriq/webriq-api-docs). Feel free to submit a pull request to help this documentation improve.
 
@@ -62,7 +62,7 @@ let api = wapi.authorize('token');
 
 > Make sure to replace `token` with your API key.
 
-WebriQ API uses JSON Web Tokens to authorize access access to the API. You can register a new WebriQ API by going to your sites settings page and `API` tab. Alternatively you can use the *Tokens* endpoint below to generate one.
+WebriQ API uses JSON Web Tokens to authorize access to the API. You can register a new WebriQ API by going to your sites settings page and `API` tab. Alternatively you can use the *Tokens* endpoint [below](#get-a-token) to generate one.
 
 WebriQ API expects for the API key to be included in all API requests to the server in a header that looks like the following:
 

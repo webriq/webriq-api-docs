@@ -1,5 +1,10 @@
 # Sites
 
+
+
+
+
+################################################################################################################################################################################
 ## Get All Sites
 
 ```shell
@@ -20,7 +25,7 @@ let sites = api.sites.get();
 {
   "data": [
     {
-      "id": "aXbErEB9J3B0",
+      "id": "EKekWeRrRqPQ",
       "primary_owner": "hellome@gmail.com",
       "role": "owner",
       "subdomain": "anewsitehasbeenmade.sites.webriqs.com",
@@ -33,7 +38,7 @@ let sites = api.sites.get();
       "created": "2017-03-15T07:08:25+00:00",
       "updated": "2017-03-15T07:08:25+00:00",
       "endpoints": {
-        "collections": "https://app.webriq.com/api/sites/aXbErEB9J3B0/collections"
+        "collections": "https://app.webriq.com/api/sites/EKekWeRrRqPQ/collections"
       }
     },
     {...},
@@ -43,7 +48,7 @@ let sites = api.sites.get();
 }
 ```
 
-This endpoint retrieves all sites on your WebriQ account. Sites you <code>primarily owned</code>, <code>invited to owned</code> and/or with you as <code>developer</code>.
+This endpoint retrieves all sites on your WebriQ account. Sites you <code>primarily owned</code>, <code>invited to owned</code> and/or with you as <code>developer</code>. The rest of the API endpoints will allow you to see how the data model is designed on your site as well as be able to read, create, update, delete data/content saved.
 
 ### HTTP Request
 
@@ -52,6 +57,8 @@ This endpoint retrieves all sites on your WebriQ account. Sites you <code>primar
 
 
 
+
+################################################################################################################################################################################
 ## Get Site
 
 ```shell
@@ -72,13 +79,13 @@ let site = api.sites.get('EKekWeRrRqPQ');
 ```json
 {
   "data": {
-    "collections": "https://app.webriq.com/api/sites/aXbErEB9J3B0/collections"
+    "collections": "https://app.webriq.com/api/sites/EKekWeRrRqPQ/collections"
   },
   "status_code": 200
 }
 ```
 
-This endpoint retrieves available site API endpoints for a given site by passing its ID. By default, this returns `collection` which is the default resource you can work on managing your site's data.
+This endpoint retrieves all available site API endpoints for a given site by passing its ID. By default, this returns the `collection` API endpoint.
 
 ### HTTP Request
 
@@ -93,6 +100,8 @@ ID | The ID of the site to retrieve
 
 
 
+
+################################################################################################################################################################################
 ## Get Site Collection Model
 
 ```shell
@@ -173,7 +182,7 @@ let site_collection_model = api.sites.get('EKekWeRrRqPQ').collections;
 }
 ```
 
-This endpoint retrieves the data model of the current site.
+This endpoint retrieves the summary of the data model of the current site. This data model tells us which parts of your site's data we can work on; activities such as creating, reading, updating, deleting content and more.
 
 ### HTTP Request
 
@@ -186,12 +195,15 @@ Parameter | Description
 ID | The ID of the site to retrieve
 
 <aside class="notice">
-A <code>collection</code> is a simple group of data via a definition or a model. There are two types of collection, <code>file</code> and <code>folder</code>. Folder houses a list of <code>files</code> or <code>folder</code> types. In the end, the very basic type of <code>file</code> is the resource where you can work on saving and deleting data.
+A <code>collection</code> is a simple group of data via a definition or a model. There are two types of collection, <code>file</code> and <code>folder</code>. Folder houses a list of <code>files</code> or <code>folder</code> types. In the end, the very basic type of <code>file</code> is the resource where you can work on saving, updating and deleting data.
 </aside>
 
 
 
 
+
+
+################################################################################################################################################################################
 ## Get Site Collection
 
 ```shell
@@ -221,8 +233,6 @@ const wapi = require('webriq-api');
 let api = wapi.authorize('token');
 let site = api.sites.get('EKekWeRrRqPQ').collections.get('news');
 ```
-
-
 
 > Example result below for <code>file</code> type
 
@@ -292,6 +302,7 @@ A `collection` is a simple group of data via a definition or a model. There are 
 
 
 
+################################################################################################################################################################################
 ## Save New Site Collection
 
 ```shell
@@ -349,13 +360,16 @@ This endpoint saves a given collection of a given site. The retrieved collection
 
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the site
-COLLECTION_PATH_AND_NAME | Collection name and path to save
+Parameter | Description | Location
+--------- | ----------- | ---------
+ID | The ID of the site | Query URL
+COLLECTION_PATH_AND_NAME | Collection name and path to save | Query URL
+BODY | JSON Raw Data | Request Body following the Collection model
 
 
 
+
+################################################################################################################################################################################
 ## Update Existing Collection
 
 ```shell
@@ -413,12 +427,18 @@ This endpoint updates a given collection of a given site. The retrieved collecti
 
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the site
-COLLECTION_PATH_AND_NAME | Collection name and path to save
+
+Parameter | Description | Location
+--------- | ----------- | ---------
+ID | The ID of the site | Query URL
+COLLECTION_PATH_AND_NAME | Collection name and path to save | Query URL
+BODY | JSON Raw Data | Request Body following the Collection model
 
 
+
+
+
+##################################################################################################################################################################################
 ## Deleting Collection
 
 ```shell
@@ -458,36 +478,102 @@ COLLECTION_PATH_AND_NAME | Collection name and path to save
 
 
 
-## Saving With File Uploads
+
+
+################################################################################################################################################################################
+## File Uploads
 
 ```shell
-curl "https://app.webriq.com/api/kittens/2"
+# POST and PUT requests are allowed for file uploads
+curl -X PUT --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \
+     "title": "Working With JSON", \
+     "date": "1459900800", \
+     "shortdesc": "Here is some more information about this product that is only revealed once clicked on.", \
+     "banner": { \
+        "filedata": { \
+          "name": "11111.png", \
+          "content": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTRGQjkwNjdERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTRGQjkwNjhERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxNEZCOTA2NURGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxNEZCOTA2NkRGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmXj5kYAAAN5SURBVHja7JdJaFRBEIbnDYlOVvctalCj4oIhUUGQHBSFJO6CB4MgKJ4UQtCLXiTEKBEVUUGCGggu4EFRvLgvmAWNSzQqxgUMUXHFaBRNXDL+hf+Dou15b0aFudjw8eZ1VVfX666u6nHC4XAgni0YiHOLuwMJXkLHcRLxGAemgElgFBgCeoMkpdoJ3oOX4DG4Da6CW9jiT55z2GIAEw/HowgsArlK1AaegjfgA/gh6iAN9AJDwSCl3wKOgWrM02T1QBxw4ZdtBO0iAq9lMFhKR2SSoB5jjE8Bo8E8sA3cpx1xdKs4+tsYw8BZDmgEy0G/SJNFA1oIzAG1tLvXz4EOcBEkG/1JMUwqcdPd4sgD8NDUN0+BaLdA8FnFw3o86vEsAUGfoJ2FRx2owe+Raps7uJ2O3yn4xjjQTQIyh2SC1REmL8DjKL9WWg8lC9Juh18QPpGvNfok8I5zdYSFlmWXyG+l/B6YbcjTeYLO+cXABfAWpBr93cBOTnBd9tmQuzIJtkyLg+Mpr/RzYAsVcy1GeoIzlOep/mFAks1dHtcSy9jFHLfCLwgv8Zln2eZycBJIgOar/vk8/yv5PsMyNp8O1PnVgnrwjh6bbTJ4BQ6C6ap/AWjA11xmqg4ZwSkrN1fSMnjk6QCMtDF1TsXAXMuJkWNUKfsMeTpI5f7uoU4Gv1Q3mbwPOAT736Ophq6xYkuOkOBrZNGRIjUYiNFT6uglGMWsBHwEh6Mtx9fAabAEBrJpyOHXu4mkAUwEY0EznHrO/mRJ39QPsJiJXpXS8XYg/CtsS5lSK1RfAouKtPNMTNlM3W4LMVmlwAepkBtYprfHdCHBfFekcIBCGCrmF/VVmayJ9wK5J9xQQxOZdGRr1oIssAn2WiPmb4+i0p+Z8QtYw/pfQFkaK6YE7Rg1po6xsp+xUW8WJs9EZHGiUKXgr7Kf7A/y1iPLO0Dp1yh9cW6CX/X0rG5QkMSzDnTRaDv7u5j92rkybnumTswq6N3xvRRGUd9HcDJ5OSJ1gf0VPNsBtS3uFpRFfX+IwoFSGnVXodq9dMi5p06GqhM7vK5tscbAQPCChneDffx9QK2EpOhm9u+K+drm48BmFVTTmIiq+H4CLGPtkPfyP7o3ekyexft+mJkvpGRlyrFOW5n9Fw7I8t9kosmxyIu47zP/5ubs/P9zGm8HfgowAOu/JVc3mQ8hAAAAAElFTkSuQmCC" \
+        } \
+      }, \
+     "categories": "technology food", \
+     "body": "Sample update markdown content" \
+   }' 'https://app.webriq.com/api/sites/EKekWeRrRqPQ/collections/news%2Fsamplemarkdown22.md'
   -H "Authorization: Bearer <token>"
 ```
 
 ```javascript
-const kittn = require('kittn');
+const wapi = require('webriq-api');
 
-let api = kittn.authorize('token');
-let max = api.kittens.get(2);
+let api = wapi.authorize('token');
+let site = api.sites.get('EKekWeRrRqPQ').collections.post('news/samplemarkdown22.md').data({
+  "title": "Working With JSON",
+  "date": "1459900800",
+  "shortdesc": "Here is some more information about this product that is only revealed once clicked on.",
+  "banner": {
+    "filedata": {
+      "name": "11111.png",
+      "content": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTRGQjkwNjdERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTRGQjkwNjhERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxNEZCOTA2NURGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxNEZCOTA2NkRGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmXj5kYAAAN5SURBVHja7JdJaFRBEIbnDYlOVvctalCj4oIhUUGQHBSFJO6CB4MgKJ4UQtCLXiTEKBEVUUGCGggu4EFRvLgvmAWNSzQqxgUMUXHFaBRNXDL+hf+Dou15b0aFudjw8eZ1VVfX666u6nHC4XAgni0YiHOLuwMJXkLHcRLxGAemgElgFBgCeoMkpdoJ3oOX4DG4Da6CW9jiT55z2GIAEw/HowgsArlK1AaegjfgA/gh6iAN9AJDwSCl3wKOgWrM02T1QBxw4ZdtBO0iAq9lMFhKR2SSoB5jjE8Bo8E8sA3cpx1xdKs4+tsYw8BZDmgEy0G/SJNFA1oIzAG1tLvXz4EOcBEkG/1JMUwqcdPd4sgD8NDUN0+BaLdA8FnFw3o86vEsAUGfoJ2FRx2owe+Raps7uJ2O3yn4xjjQTQIyh2SC1REmL8DjKL9WWg8lC9Juh18QPpGvNfok8I5zdYSFlmWXyG+l/B6YbcjTeYLO+cXABfAWpBr93cBOTnBd9tmQuzIJtkyLg+Mpr/RzYAsVcy1GeoIzlOep/mFAks1dHtcSy9jFHLfCLwgv8Zln2eZycBJIgOar/vk8/yv5PsMyNp8O1PnVgnrwjh6bbTJ4BQ6C6ap/AWjA11xmqg4ZwSkrN1fSMnjk6QCMtDF1TsXAXMuJkWNUKfsMeTpI5f7uoU4Gv1Q3mbwPOAT736Ophq6xYkuOkOBrZNGRIjUYiNFT6uglGMWsBHwEh6Mtx9fAabAEBrJpyOHXu4mkAUwEY0EznHrO/mRJ39QPsJiJXpXS8XYg/CtsS5lSK1RfAouKtPNMTNlM3W4LMVmlwAepkBtYprfHdCHBfFekcIBCGCrmF/VVmayJ9wK5J9xQQxOZdGRr1oIssAn2WiPmb4+i0p+Z8QtYw/pfQFkaK6YE7Rg1po6xsp+xUW8WJs9EZHGiUKXgr7Kf7A/y1iPLO0Dp1yh9cW6CX/X0rG5QkMSzDnTRaDv7u5j92rkybnumTswq6N3xvRRGUd9HcDJ5OSJ1gf0VPNsBtS3uFpRFfX+IwoFSGnVXodq9dMi5p06GqhM7vK5tscbAQPCChneDffx9QK2EpOhm9u+K+drm48BmFVTTmIiq+H4CLGPtkPfyP7o3ekyexft+mJkvpGRlyrFOW5n9Fw7I8t9kosmxyIu47zP/5ubs/P9zGm8HfgowAOu/JVc3mQ8hAAAAAElFTkSuQmCC"
+    }
+  },
+  "categories": "technology food",
+  "body": "Sample markdown content"
+});
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
+  "message": "Collection updated at 'news/2016-04-04-working-with-json.md'",
+  "data": {
+    "main": {
+      "title": "Working With JSON",
+      "date": "1459900800",
+      "shortdesc": "Here is some more information about this product that is only revealed once clicked on.",
+      "banner": "img/11111.png",
+      "categories": "technology food",
+      "body": "Sample update markdown content"
+    },
+    "uploads": [
+      {
+        "key_path": "banner",
+        "content": "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTRGQjkwNjdERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTRGQjkwNjhERjk1MTFFNUFFNzE5NDRDRDE3NUExN0YiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxNEZCOTA2NURGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxNEZCOTA2NkRGOTUxMUU1QUU3MTk0NENEMTc1QTE3RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmXj5kYAAAN5SURBVHja7JdJaFRBEIbnDYlOVvctalCj4oIhUUGQHBSFJO6CB4MgKJ4UQtCLXiTEKBEVUUGCGggu4EFRvLgvmAWNSzQqxgUMUXHFaBRNXDL+hf+Dou15b0aFudjw8eZ1VVfX666u6nHC4XAgni0YiHOLuwMJXkLHcRLxGAemgElgFBgCeoMkpdoJ3oOX4DG4Da6CW9jiT55z2GIAEw/HowgsArlK1AaegjfgA/gh6iAN9AJDwSCl3wKOgWrM02T1QBxw4ZdtBO0iAq9lMFhKR2SSoB5jjE8Bo8E8sA3cpx1xdKs4+tsYw8BZDmgEy0G/SJNFA1oIzAG1tLvXz4EOcBEkG/1JMUwqcdPd4sgD8NDUN0+BaLdA8FnFw3o86vEsAUGfoJ2FRx2owe+Raps7uJ2O3yn4xjjQTQIyh2SC1REmL8DjKL9WWg8lC9Juh18QPpGvNfok8I5zdYSFlmWXyG+l/B6YbcjTeYLO+cXABfAWpBr93cBOTnBd9tmQuzIJtkyLg+Mpr/RzYAsVcy1GeoIzlOep/mFAks1dHtcSy9jFHLfCLwgv8Zln2eZycBJIgOar/vk8/yv5PsMyNp8O1PnVgnrwjh6bbTJ4BQ6C6ap/AWjA11xmqg4ZwSkrN1fSMnjk6QCMtDF1TsXAXMuJkWNUKfsMeTpI5f7uoU4Gv1Q3mbwPOAT736Ophq6xYkuOkOBrZNGRIjUYiNFT6uglGMWsBHwEh6Mtx9fAabAEBrJpyOHXu4mkAUwEY0EznHrO/mRJ39QPsJiJXpXS8XYg/CtsS5lSK1RfAouKtPNMTNlM3W4LMVmlwAepkBtYprfHdCHBfFekcIBCGCrmF/VVmayJ9wK5J9xQQxOZdGRr1oIssAn2WiPmb4+i0p+Z8QtYw/pfQFkaK6YE7Rg1po6xsp+xUW8WJs9EZHGiUKXgr7Kf7A/y1iPLO0Dp1yh9cW6CX/X0rG5QkMSzDnTRaDv7u5j92rkybnumTswq6N3xvRRGUd9HcDJ5OSJ1gf0VPNsBtS3uFpRFfX+IwoFSGnVXodq9dMi5p06GqhM7vK5tscbAQPCChneDffx9QK2EpOhm9u+K+drm48BmFVTTmIiq+H4CLGPtkPfyP7o3ekyexft+mJkvpGRlyrFOW5n9Fw7I8t9kosmxyIu47zP/5ubs/P9zGm8HfgowAOu/JVc3mQ8hAAAAAElFTkSuQmCC",
+        "media_folder": "assets/img",
+        "filename": "11111.png"
+      }
+    ]
+  },
   "status_code": 200
 }
 ```
 
-This endpoint updates a given collection of a given site. The retrieved collection model must be followed in JSON format and passed in the body section.
+When working with file uploads, you can directly upload files via attaching the raw data of file in JSON format. File uploads only works on data type <code>image</code>.
+
+One should follow the format below:
+
+<code>
+"filedata": {
+  "name": "filename.png",
+  "content": "base64_encoded_data"
+}
+</code>
+
+In **Save New Site Collection** example POST request via <code>shell</code>, we can only do file upload on <code>banner</code> key as it's the only one with <code>image</code> data type.
 
 ### HTTP Request
 
-`PUT https://app.webriq.com/api/sites/<ID>/collections`
+`POST https://app.webriq.com/api/sites/<ID>/collections/<COLLECTION_PATH_AND_NAME>`
+
+`PUT https://app.webriq.com/api/sites/<ID>/collections/<COLLECTION_PATH_AND_NAME>`
 
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the site to retrieve
+Parameter | Description | Location
+--------- | ----------- | ---------
+ID | The ID of the site | Query URL
+COLLECTION_PATH_AND_NAME | Collection name and path to save | Query URL
+BODY | JSON Raw Data | Request Body following the Collection model
+
+<aside class="notice">
+File upload <code>content</code> must be <code>base64 encoded</code>. Find out how to get base64 encoded data with your choice of language.
+</aside>
