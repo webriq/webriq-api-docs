@@ -4,14 +4,10 @@
 
 <aside class="notice">The WebriQ API uses the following success codes.</aside>
 
-The WebriQ API uses the following error codes:
-
-
-Error Code | Meaning
+Success Code | Meaning
 ---------- | -------
 200 | OK -- The request has succeeded.
 201 | Created -- The request has been fulfilled and resulted in a new resource being created
-
 
 
 ## Errors
